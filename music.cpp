@@ -610,21 +610,9 @@ void initMusicMap() {
     return;
   }
 
-  const int CHUNK_SIZE = 5;
-
-  for (int chunk = 0; chunk < (TOTAL_MUSICS + CHUNK_SIZE - 1) / CHUNK_SIZE; chunk++) {
-    int startIdx = chunk * CHUNK_SIZE;
-    int endIdx = min(startIdx + CHUNK_SIZE, TOTAL_MUSICS);
-
-    for (int i = startIdx; i < endIdx; i++) {
-
-      String code = String(musics[i].code);
-      musicMap[code] = i;
-
-      delay(20);
-    }
-
-    delay(100);
+  for (int i = 0; i < TOTAL_MUSICS; i++) {
+    String code = String(musics[i].code);
+    musicMap[code] = i;
   }
 
   mapInitialized = true;
