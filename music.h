@@ -19,7 +19,7 @@ namespace std {
 #define LCD_COLUMNS 18
 #define MIDI_EVENTS_PER_SONG 16
 #define COMMENT_LINES_PER_SONG 5
-#define TOTAL_MUSICS 49
+#define TOTAL_MUSICS 53
 
 #define CH_NORD_LEAD_LAYER1 1
 #define CH_NORD_LEAD_LAYER2 2
@@ -47,8 +47,8 @@ struct MidiEvent {
 
 struct Music {
   char code[4];
-  char author[LCD_COLUMNS+1];
-  char title[LCD_COLUMNS+1];
+  char author[20];
+  char title[27];
   char key[3];
   byte tempo;
   MidiEvent midiPreset[MIDI_EVENTS_PER_SONG];
