@@ -3,6 +3,7 @@
 // Array of Music objects
 static const Music musics[TOTAL_MUSICS] = {
   {
+    "B0",
     "Montgomery",
     "Frente ao Sol",
     "C#",
@@ -18,6 +19,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B1",
     "U2",
     "Mysterious Ways",
     "G",
@@ -35,6 +37,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B2",
     "A-Ha",
     "I've been losing y",
     "C",
@@ -46,6 +49,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B3",
     "Montgomery",
     "Fugas e Lamentos",
     "C",
@@ -57,6 +61,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B4",
     "Duran Duran",
     "Save a prayer",
     "",
@@ -68,6 +73,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B5",
     "Chris Isaak",
     "Wicked Game",
     "B",
@@ -79,6 +85,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B6",
     "Montgomery",
     "Final de Tempestad",
     "",
@@ -90,6 +97,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B7",
     "Joy Division",
     "Love Will Tear Us",
     "",
@@ -101,6 +109,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B8",
     "Montgomery",
     "Estrada de Sonhos",
     "",
@@ -112,6 +121,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B9",
     "The Verve",
     "Bitter Sweet S.",
     "",
@@ -123,6 +133,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B10",
     "Uns e Outros",
     "Carta aos Missiona",
     "",
@@ -134,6 +145,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B11",
     "Montgomery",
     "Algum Lugar",
     "",
@@ -145,7 +157,8 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
-    "Legião Urbana",
+    "B12",
+    "Legiao Urbana",
     "Indios",
     "",
     0,
@@ -156,6 +169,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B13",
     "Montgomery",
     "Pintura",
     "",
@@ -167,6 +181,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B14",
     "Depeche Mode",
     "Enjoy the Silence",
     "",
@@ -178,6 +193,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B15",
     "Montgomery",
     "A mesma poesia",
     "",
@@ -189,6 +205,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B16",
     "Montgomery",
     "Pinoquio",
     "",
@@ -200,6 +217,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B17",
     "Echo & The Bunny",
     "Lips Like Sugar",
     "",
@@ -211,6 +229,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B18",
     "Montgomery",
     "Até o sol nascer",
     "",
@@ -222,6 +241,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B19",
     "The Cure",
     "Just Like Heaven",
     "",
@@ -233,6 +253,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B20",
     "Montgomery",
     "Êxodo",
     "",
@@ -244,6 +265,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B21",
     "RPM",
     "Juvenilia",
     "",
@@ -255,6 +277,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B22",
     "Montgomery",
     "Beijos de Arame F",
     "",
@@ -266,6 +289,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B23",
     "Pixies",
     "Where is my mind",
     "",
@@ -277,6 +301,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B24",
     "Barão Vermelho",
     "Meus bons Amigos",
     "",
@@ -288,6 +313,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B25",
     "REM",
     "Crush With Eyeline",
     "",
@@ -299,6 +325,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B26",
     "Simple Minds",
     "Don't you ...",
     "",
@@ -310,6 +337,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B27",
     "Oasis",
     "Wonderwall",
     "",
@@ -321,6 +349,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B28",
     "Legião Urbana",
     "Daniel na cova",
     "",
@@ -332,6 +361,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B29",
     "INXS",
     "Never tear us apar",
     "",
@@ -343,6 +373,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B30",
     "The weeknd",
     "Blinding Lights",
     "",
@@ -354,6 +385,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B31",
     "REM",
     "The one I love",
     "",
@@ -365,6 +397,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B32",
     "U2",
     "New Year's Day",
     "",
@@ -376,6 +409,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B33",
     "Montgomery",
     "Viver Morrer e Esq",
     "",
@@ -387,6 +421,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B34",
     "Montgomery",
     "Me Escolha",
     "",
@@ -398,6 +433,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B35",
     "Montgomery",
     "O Perdão",
     "",
@@ -409,6 +445,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B36",
     "Montgomery",
     "Chuva Inocente",
     "",
@@ -420,6 +457,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B37",
     "Montgomery",
     "Todo Tempo",
     "",
@@ -431,6 +469,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B38",
     "Plebe Rude",
     "Ate quando esperar",
     "",
@@ -442,6 +481,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B40",
     "Travis",
     "Side",
     "",
@@ -453,6 +493,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B41",
     "Bruce Springsteen",
     "Dancing in the dar",
     "",
@@ -464,6 +505,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B42",
     "Garbage",
     "Only happy when it",
     "",
@@ -475,6 +517,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B43",
     "U2",
     "With or Without Yu",
     "",
@@ -486,6 +529,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B44",
     "The Cult",
     "She sells sanctuar",
     "",
@@ -497,6 +541,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B45",
     "Ira",
     "Envelheco Na Cidad",
     "",
@@ -508,6 +553,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B46",
     "The Killers",
     "Somebody Told Me",
     "",
@@ -519,6 +565,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B47",
     "Oasis",
     "Stop Crying",
     "",
@@ -530,6 +577,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B48",
     "David Bowie",
     "Heroes",
     "",
@@ -541,6 +589,7 @@ static const Music musics[TOTAL_MUSICS] = {
     }
   },
   {
+    "B49",
     "Franz Ferdinand",
     "Take Me Out",
     "",
@@ -553,12 +602,51 @@ static const Music musics[TOTAL_MUSICS] = {
   }
 };
 
+static std::unordered_map<String, int> musicMap;
+static bool mapInitialized = false;
+
+void initMusicMap() {
+  if (mapInitialized) {
+    return;
+  }
+
+  const int CHUNK_SIZE = 5;
+
+  for (int chunk = 0; chunk < (TOTAL_MUSICS + CHUNK_SIZE - 1) / CHUNK_SIZE; chunk++) {
+    int startIdx = chunk * CHUNK_SIZE;
+    int endIdx = min(startIdx + CHUNK_SIZE, TOTAL_MUSICS);
+
+    for (int i = startIdx; i < endIdx; i++) {
+
+      String code = String(musics[i].code);
+      musicMap[code] = i;
+
+      delay(20);
+    }
+
+    delay(100);
+  }
+
+  mapInitialized = true;
+}
+
 Music getMusic(int musicIndex) {
-  // Check if the index is within bounds
   if (musicIndex >= 0 && musicIndex < TOTAL_MUSICS) {
     return musics[musicIndex];
   }
 
-  // Return the first music as a fallback if index is out of bounds
+  return musics[0];
+}
+
+Music getMusic(const String& key) {
+  if (!mapInitialized) {
+    initMusicMap();
+  }
+
+  if (musicMap.find(key) != musicMap.end()) {
+    int index = musicMap[key];
+    return musics[index];
+  }
+
   return musics[0];
 }

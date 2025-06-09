@@ -2,6 +2,18 @@
 #define MUSIC_H
 
 #include <Arduino.h>
+#include <unordered_map>
+#include <string>
+
+// Define hash function for Arduino String
+namespace std {
+  template <>
+  struct hash<String> {
+    size_t operator()(const String& s) const {
+      return hash<std::string>()(s.c_str());
+    }
+  };
+}
 
 // Constants from main file
 #define LCD_COLUMNS 18
@@ -34,6 +46,7 @@ struct MidiEvent {
 };
 
 struct Music {
+  char code[4];
   char author[LCD_COLUMNS+1];
   char title[LCD_COLUMNS+1];
   char key[3];
@@ -48,7 +61,9 @@ struct Music {
   MidiEvent midiButton6[MIDI_EVENTS_PER_SONG];
 };
 
-// Function declaration
+// Function declarations
 Music getMusic(int musicIndex);
+Music getMusic(const String& key);
+void initMusicMap();
 
 #endif // MUSIC_H

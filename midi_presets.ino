@@ -48,11 +48,15 @@ typedef enum {
 ApplicationState currentState = Menu;
 
 void setup() {
-  //Serial.begin(9600);
+  //Serial.begin(115200);
 
   Lcd.Init();
   Lcd.WriteByte_command(lcdStatus);
   Lcd.testPixel(1);
+
+  // Initialize the music map
+  initMusicMap();
+
   //displayMusic(selectedMusic);
   displayMenu();
 
