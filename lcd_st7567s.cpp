@@ -147,13 +147,17 @@ void lcd_st7567s::MoveCursor() {
     WriteByte_command(0x00 + (x_pixel % 16));
 }
 
-void lcd_st7567s::WriteFont(int num) {
+void lcd_st7567s::WriteFont(int num, bool invcolor) {
     for (int i = 0; i < 7; i++) {
-        WriteByte_dat(font_7x8[num][i]);
+        byte data = font_7x8[num][i];
+        if (invcolor) {
+            data = ~data; // Invert the data for inverted color
+        }
+        WriteByte_dat(data);
     }
 }
 
-void lcd_st7567s::Println(int line, const char *str) {
+void lcd_st7567s::Println(int line, const char *str, bool invcolor) {
   Cursor(0, line);
   int count = 0;
   while (*str) {
@@ -161,23 +165,23 @@ void lcd_st7567s::Println(int line, const char *str) {
     int font_index = GetFontIndex(c);
 
     if (font_index != -1) {
-        WriteFont(font_index);
+        WriteFont(font_index, invcolor);
         count++;
     }
   }
   while (count < 18) {
-    WriteFont(87);
+    WriteFont(87, invcolor); // Space character (index 87)
     count++;
   }
 }
 
-void lcd_st7567s::Print(const char *str) {
+void lcd_st7567s::Print(const char *str, bool invcolor) {
   while (*str) {
     char c = *str++;
     int font_index = GetFontIndex(c);
 
     if (font_index != -1) {
-        WriteFont(font_index);
+        WriteFont(font_index, invcolor);
     }
   }
 }

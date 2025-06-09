@@ -20,11 +20,11 @@ class lcd_st7567s {
     void DisplayPixel(int x, int y);
     void ClearPixel(int x, int y);
     void Cursor(int x, int y);
-    void Println(int line, const char *str);
-    void Print(const char *str); // Use const char* for strings
+    void Println(int line, const char *str, bool invcolor = false);
+    void Print(const char *str, bool invcolor = false); // Use const char* for strings
     void testPixel(int t);
     void DrawLine(int x1, int y1, int x2, int y2, bool invcolor);
-    void WriteFont(int num);
+    void WriteFont(int num, bool invcolor = false);
 
   private:
     void MoveCursor();

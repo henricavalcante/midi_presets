@@ -78,16 +78,22 @@ void loop() {
   // Check for long button press (3 seconds)
   if (buttonIsPressed && !longPressDetected && (tickTime - buttonPressStartTime >= LONG_PRESS_DURATION)) {
     longPressDetected = true;
+    currentState = Menu;
     displayMenu();
   }
 
   // Check for normal button press
   if (buttonHasBeenPressed == true) {
-    if (currentState == AllSongs) {
+    if (currentState == Menu) {
+      if (selectedMenuOption == 0) {
+        currentState = AllSongs;
         activateMusic(selectedMusic);
-    } else if (currentState == Menu) {
-
-    }
+      } else if (selectedMenuOption == 1) {
+        currentState = Setlist;
+      }
+    } else if (currentState == AllSongs) {
+       activateMusic(selectedMusic);
+   }
 
     buttonHasBeenPressed = false;
   }
@@ -96,6 +102,8 @@ void loop() {
     encodeHasBeenUpdated = false;
     if (currentState == AllSongs) {
         displayMusic(selectedMusic);
+    } else if (currentState == Menu) {
+        displayMenu();
     }
   }
 
@@ -147,8 +155,9 @@ void displayMenu() {
   Lcd.Println(0, "Menu");
   Lcd.DrawLine(0, 10, 128, 10, false);
 
-  Lcd.Println(2, "1. All songs");
-  Lcd.Println(3, "2. Setlist");
+  // Display menu options with the selected one inverted
+  Lcd.Println(2, "1. All songs", selectedMenuOption == 0);
+  Lcd.Println(3, "2. Setlist", selectedMenuOption == 1);
 }
 
 void displayMusic(int musicIndex) {
@@ -190,7 +199,7 @@ void updateEncoder() {
     if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
       if (digitalRead(DT) != currentStateCLK) {
           if (currentState == Menu) {
-            selectedMenuOption = 0;
+            selectedMenuOption = 1;
           } else if (currentState == AllSongs) {
               if (++selectedMusic > TOTAL_MUSICS - 1) {
                   selectedMusic = TOTAL_MUSICS - 1;
@@ -198,7 +207,7 @@ void updateEncoder() {
           }
       } else {
           if (currentState == Menu) {
-            selectedMenuOption = 1;
+            selectedMenuOption = 0;
           } else if (currentState == AllSongs) {
             if (--selectedMusic < 0) {
               selectedMusic = 0;
