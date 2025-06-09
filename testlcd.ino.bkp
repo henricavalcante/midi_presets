@@ -1,0 +1,21 @@
+#include"lcd_st7567s.h"
+
+lcd_st7567s Lcd;
+
+
+void setup() {
+  //Serial.begin(9600);
+
+  Serial.println("Initializing LCD");
+  Lcd.Init();
+  Serial.println("Inverting Colors");
+  Lcd.WriteByte_command(0xA7);
+  Serial.println("Testing Pixels");
+  Lcd.testPixel(1);
+}
+
+void loop() {
+  Serial.println("Testing Pixels");
+  Lcd.testPixel(1);
+  delay(2000);
+}
