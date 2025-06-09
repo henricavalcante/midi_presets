@@ -30,7 +30,7 @@ unsigned long lastEncodeUpdate = 0;
 bool buttonIsPressed = false;
 unsigned long buttonPressStartTime = 0;
 bool longPressDetected = false;
-#define LONG_PRESS_DURATION 3000
+#define LONG_PRESS_DURATION 2000
 
 #define LCD_NORMAL 0xA7
 #define LCD_INVERTED 0xA6
