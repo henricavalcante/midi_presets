@@ -19,12 +19,18 @@ lcd_st7567s Lcd;
 int selectedMusic = 0;
 int activeMusic = 0;
 
+int selectedMenuOption = 0;
+
 byte lastStateCLK;
 
 bool buttonHasBeenPressed = false;
 unsigned long lastButtonPress = 0;
 bool encodeHasBeenUpdated = false;
 unsigned long lastEncodeUpdate = 0;
+bool buttonIsPressed = false;
+unsigned long buttonPressStartTime = 0;
+bool longPressDetected = false;
+#define LONG_PRESS_DURATION 3000
 
 #define LCD_NORMAL 0xA7
 #define LCD_INVERTED 0xA6
@@ -33,13 +39,22 @@ byte lcdStatus = LCD_NORMAL;
 
 #define DEBOUNCE_TIME 50
 
+typedef enum {
+  Menu,
+  AllSongs,
+  Setlist
+} ApplicationState;
+
+ApplicationState currentState = Menu;
+
 void setup() {
   //Serial.begin(9600);
 
   Lcd.Init();
   Lcd.WriteByte_command(lcdStatus);
   Lcd.testPixel(1);
-  displayMusic(selectedMusic);
+  //displayMusic(selectedMusic);
+  displayMenu();
 
   pinMode(CLK, INPUT);
   pinMode(DT, INPUT);
@@ -59,14 +74,29 @@ unsigned long tickTime = millis();
 
 void loop() {
   tickTime = millis();
+
+  // Check for long button press (3 seconds)
+  if (buttonIsPressed && !longPressDetected && (tickTime - buttonPressStartTime >= LONG_PRESS_DURATION)) {
+    longPressDetected = true;
+    displayMenu();
+  }
+
+  // Check for normal button press
   if (buttonHasBeenPressed == true) {
-    activateMusic(selectedMusic);
+    if (currentState == AllSongs) {
+        activateMusic(selectedMusic);
+    } else if (currentState == Menu) {
+
+    }
+
     buttonHasBeenPressed = false;
   }
 
   if (encodeHasBeenUpdated == true && tickTime - lastEncodeUpdate > DEBOUNCE_TIME) {
     encodeHasBeenUpdated = false;
-    displayMusic(selectedMusic);
+    if (currentState == AllSongs) {
+        displayMusic(selectedMusic);
+    }
   }
 
   blink();
@@ -157,27 +187,51 @@ void displayMusic(int musicIndex) {
 
 void updateEncoder() {
   int currentStateCLK = digitalRead(CLK);
-  if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
-    if (digitalRead(DT) != currentStateCLK) {
-      if (++selectedMusic > TOTAL_MUSICS - 1) {
-        selectedMusic = TOTAL_MUSICS - 1;
+    if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
+      if (digitalRead(DT) != currentStateCLK) {
+          if (currentState == Menu) {
+            selectedMenuOption = 0;
+          } else if (currentState == AllSongs) {
+              if (++selectedMusic > TOTAL_MUSICS - 1) {
+                  selectedMusic = TOTAL_MUSICS - 1;
+              }
+          }
+      } else {
+          if (currentState == Menu) {
+            selectedMenuOption = 1;
+          } else if (currentState == AllSongs) {
+            if (--selectedMusic < 0) {
+              selectedMusic = 0;
+            }
+          }
       }
-    } else {
-      if (--selectedMusic < 0) {
-        selectedMusic = 0;
-      }
+      lastEncodeUpdate = millis();
+      encodeHasBeenUpdated = true;
     }
-    lastEncodeUpdate = millis();
-    encodeHasBeenUpdated = true;
-  }
-  lastStateCLK = currentStateCLK;
+    lastStateCLK = currentStateCLK;
 }
 
 void buttonPress() {
-	if (digitalRead(SW) == LOW) {
-		if (millis() - lastButtonPress > DEBOUNCE_TIME) {
-      buttonHasBeenPressed = true;
-		}
-		lastButtonPress = millis();
-	}
+  // Button is pressed (LOW)
+  if (digitalRead(SW) == LOW) {
+    if (millis() - lastButtonPress > DEBOUNCE_TIME) {
+      // If this is a new press (not already being held)
+      if (!buttonIsPressed) {
+        buttonIsPressed = true;
+        buttonPressStartTime = millis();
+      }
+    }
+    lastButtonPress = millis();
+  } 
+  // Button is released (HIGH)
+  else {
+    if (buttonIsPressed) {
+      // If button was held for less than LONG_PRESS_DURATION, treat as a normal press
+      if (millis() - buttonPressStartTime < LONG_PRESS_DURATION && !longPressDetected) {
+        buttonHasBeenPressed = true;
+      }
+      buttonIsPressed = false;
+      longPressDetected = false;
+    }
+  }
 }
