@@ -1,4 +1,8 @@
-# Songs
+# MIDI Presets
+
+This project is an Arduino-based MIDI controller with an LCD display for managing song presets.
+
+## Songs
 | Code | Song                       | Artist              |
 |------|----------------------------|---------------------|
 | A01  | Frente Ao Sol              | Montgomery          |
@@ -18,7 +22,7 @@
 | A15  | Todo Tempo                 | Montgomery          |
 | A16  | Êxodo                      | Montgomery          |
 | B02  | Mysterious Ways            | U2                  |
-| B03  | I’ve been losing you       | (A-ha)              |
+| B03  | I've been losing you       | (A-ha)              |
 | B05  | Save a Prayer              | Duran Duran         |
 | B06  | Wicked Game                | Chris Isaac         |
 | B08  | Love Will Tear Us Apart    | Joy Division        |
@@ -42,7 +46,7 @@
 | B33  | With or Without You        | U2                  |
 | B34  | One                        | U2                  |
 | B36  | The end of the world       | U2                  |
-| B37  | New Year’s Day             | U2                  |
+| B37  | New Year's Day             | U2                  |
 | B39  | Até quando esperar         | Prebe Rude          |
 | B40  | Side                       | Travis              |
 | B41  | Dancing in the dark        | Bruce Springsteen   |
@@ -54,3 +58,44 @@
 | B48  | Heroes                     | David Bowie         |
 | B49  | Take Me Out                | Franz Ferdinand     |
 | B50  | Suedhead                   | Morrissey           |
+
+## Fetching Song Tempos
+
+The project includes a Python script (`fetch_tempos.py`) that can automatically fetch tempo information for songs from the internet and update the `music.cpp` file.
+
+### Requirements
+
+- Python 3.6 or higher
+- (Optional) Spotify API credentials for more accurate tempo information
+
+### Installation
+
+1. (Optional) Install the Spotify API client:
+   ```
+   pip install spotipy
+   ```
+
+2. (Optional) Set up Spotify API credentials:
+   ```
+   export SPOTIPY_CLIENT_ID='your-spotify-client-id'
+   export SPOTIPY_CLIENT_SECRET='your-spotify-client-secret'
+   ```
+   You can get these credentials by creating an app on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/).
+
+### Usage
+
+1. Run the script:
+   ```
+   python fetch_tempos.py
+   ```
+
+2. The script will:
+   - Parse the `music.cpp` file to find songs without tempo information
+   - Try to fetch tempo information from multiple sources:
+     - A built-in dictionary of known tempos
+     - Spotify API (if available)
+     - SongBPM website
+   - Update the `music.cpp` file with the new tempo values
+   - Create a backup of the original file (`music.cpp.bak`)
+
+3. If some songs still don't have tempo information after running the script, you can manually add them to the `KNOWN_TEMPOS` dictionary in the script.
