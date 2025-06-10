@@ -157,11 +157,25 @@ def parse_music_cpp(file_path):
         content = f.read()
 
     songs = []
-    # Pattern to match song entries in the music.cpp file
-    pattern = r'{\s*"([^"]+)",\s*"([^"]+)",\s*"([^"]+)",\s*"[^"]*",\s*(\d+),'
+    # Pattern to match correctly formatted song entries in the music.cpp file
+    pattern1 = r'{\s*"([^"]+)",\s*"([^"]+)",\s*"([^"]+)",\s*"[^"]*",\s*(\d+),'
 
-    for match in re.finditer(pattern, content):
+    # Pattern to match incorrectly formatted song entries (with numbers between quotes)
+    pattern2 = r'{\s*"([^"]+)"(\d+)"([^"]+)"(\d+)"([^"]+)"(\d+)"(\d+),'
+
+    # Process correctly formatted entries
+    for match in re.finditer(pattern1, content):
         code, artist, title, tempo = match.groups()
+        songs.append({
+            'code': code,
+            'artist': artist,
+            'title': title,
+            'tempo': int(tempo)
+        })
+
+    # Process incorrectly formatted entries
+    for match in re.finditer(pattern2, content):
+        code, _, artist, _, title, _, tempo = match.groups()
         songs.append({
             'code': code,
             'artist': artist,
@@ -183,14 +197,33 @@ def update_music_cpp(file_path, songs):
     # Update each song's tempo in the content
     for song in songs:
         if song['tempo'] > 0:  # Only update if we have a valid tempo
-            # Pattern to match the specific song entry - more precise for the actual format
-            pattern = rf'{{(\s*)"({re.escape(song["code"])})"\s*,(\s*)"({re.escape(song["artist"])})"\s*,(\s*)"({re.escape(song["title"])})"\s*,(\s*)"[^"]*"\s*,(\s*)(\d+),'
-            replacement = rf'{{\1"{song["code"]}"{2}"{song["artist"]}"{4}"{song["title"]}"{6}"{7}{song["tempo"]},'
+            # Pattern to match correctly formatted song entries
+            pattern1 = rf'{{(\s*)"({re.escape(song["code"])})"\s*,(\s*)"({re.escape(song["artist"])})"\s*,(\s*)"({re.escape(song["title"])})"\s*,(\s*)"[^"]*"\s*,(\s*)(\d+),'
+            # Use a function for replacement to avoid group reference issues
+            def replacement_func1(match):
+                spaces1 = match.group(1)
+                spaces3 = match.group(3)
+                spaces5 = match.group(5)
+                spaces7 = match.group(7)
+                spaces8 = match.group(8)
+                return f'{{{spaces1}"{song["code"]}",{spaces3}"{song["artist"]}",{spaces5}"{song["title"]}",{spaces7}"G",{spaces8}{song["tempo"]},'
 
-            # Try to replace with the pattern
-            new_content = re.sub(pattern, replacement, content)
+            # Try to replace with the first pattern (correctly formatted)
+            new_content = re.sub(pattern1, replacement_func1, content)
 
-            # If the content didn't change, the pattern didn't match
+            # Pattern to match incorrectly formatted song entries
+            pattern2 = rf'{{(\s*)"({re.escape(song["code"])})"(\d+)"({re.escape(song["artist"])})"(\d+)"({re.escape(song["title"])})"(\d+)"(\d+),'
+
+            # Use a function for replacement to avoid group reference issues
+            def replacement_func2(match):
+                spaces1 = match.group(1)
+                return f'{{{spaces1}"{song["code"]}",\n    "{song["artist"]}",\n    "{song["title"]}",\n    "G",\n    {song["tempo"]},'
+
+            # If the content didn't change, try the second pattern (incorrectly formatted)
+            if new_content == content:
+                new_content = re.sub(pattern2, replacement_func2, content)
+
+            # If the content still didn't change, the patterns didn't match
             if new_content == content:
                 print(f"Warning: Could not update tempo for {song['artist']} - {song['title']} (code: {song['code']})")
             else:
