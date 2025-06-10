@@ -8,9 +8,17 @@ MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI_Hardware);
 
 lcd_st7567s Lcd;
 
-#define CLK 2
-#define DT 4
-#define SW 3
+#define CLK_PIN 2
+#define DT_PIN 4
+#define SW_PIN 3
+#define BUTTON1_PIN 8
+#define BUTTON2_PIN 9
+#define BUTTON3_PIN 10
+#define BUTTON4_PIN 11
+#define BUTTON5_PIN 12
+#define BUTTON6_PIN 13
+
+const int buttonPins[6] = {BUTTON1_PIN, BUTTON2_PIN, BUTTON3_PIN, BUTTON4_PIN, BUTTON5_PIN, BUTTON6_PIN};
 
 int selectedMusic = 0;
 int activeMusic = 0;
@@ -20,6 +28,10 @@ int selectedSetlistSong = 0;
 int activeSetlistSong = 0;
 
 int selectedMenuOption = 0;
+
+bool buttonStates[6] = {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH};
+bool lastButtonStates[6] = {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH};
+unsigned long lastButtonDebounceTime[6] = {0, 0, 0, 0, 0, 0};
 
 byte lastStateCLK;
 
@@ -60,18 +72,24 @@ void setup() {
 
   displayMenu();
 
-  pinMode(CLK, INPUT);
-  pinMode(DT, INPUT);
-  pinMode(SW, INPUT_PULLUP);
+  pinMode(CLK_PIN, INPUT);
+  pinMode(DT_PIN, INPUT);
+  pinMode(SW_PIN, INPUT_PULLUP);
+  pinMode(BUTTON1_PIN, INPUT_PULLUP);
+  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  pinMode(BUTTON3_PIN, INPUT_PULLUP);
+  pinMode(BUTTON4_PIN, INPUT_PULLUP);
+  pinMode(BUTTON5_PIN, INPUT_PULLUP);
+  pinMode(BUTTON6_PIN, INPUT_PULLUP);
 
   MIDI.begin(MIDI_CHANNEL_OMNI);
   MIDI_Hardware.begin(MIDI_CHANNEL_OMNI);
 
-  lastStateCLK = digitalRead(CLK);
-  attachInterrupt(digitalPinToInterrupt(CLK), updateEncoder, CHANGE);
+  lastStateCLK = digitalRead(CLK_PIN);
+  attachInterrupt(digitalPinToInterrupt(CLK_PIN), updateEncoder, CHANGE);
 
   lastButtonPress = millis();
-  attachInterrupt(digitalPinToInterrupt(SW), buttonPress, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(SW_PIN), buttonPress, CHANGE);
 }
 
 unsigned long tickTime = millis();
@@ -123,6 +141,9 @@ void loop() {
   }
 
   blink();
+
+  // Check the state of the buttons
+  checkButtons();
 }
 
 unsigned long blinkTime = 0;
@@ -271,9 +292,9 @@ void displayMusic(int musicIndex) {
 }
 
 void updateEncoder() {
-  int currentStateCLK = digitalRead(CLK);
+  int currentStateCLK = digitalRead(CLK_PIN);
   if (currentStateCLK != lastStateCLK && currentStateCLK == 1) {
-    if (digitalRead(DT) != currentStateCLK) {
+    if (digitalRead(DT_PIN) != currentStateCLK) {
       if (currentState == Menu) {
         selectedMenuOption = 1;
       } else if (currentState == AllSongs) {
@@ -314,7 +335,7 @@ void updateEncoder() {
 }
 
 void buttonPress() {
-  if (digitalRead(SW) == LOW) {
+  if (digitalRead(SW_PIN) == LOW) {
     if (millis() - lastButtonPress > DEBOUNCE_TIME) {
       if (!buttonIsPressed) {
         buttonIsPressed = true;
@@ -331,5 +352,63 @@ void buttonPress() {
       buttonIsPressed = false;
       longPressDetected = false;
     }
+  }
+}
+
+void checkButtons() {
+  for (int i = 0; i < 6; i++) {
+    bool reading = digitalRead(buttonPins[i]);
+
+    if (reading != lastButtonStates[i]) {
+      lastButtonDebounceTime[i] = millis();
+    }
+
+    if ((millis() - lastButtonDebounceTime[i]) > DEBOUNCE_TIME) {
+      if (reading != buttonStates[i]) {
+        buttonStates[i] = reading;
+
+        if (buttonStates[i] == LOW) {
+          if (currentState == AllSongs) {
+            Music m = getMusic(activeMusic);
+            MidiEvent* buttonEvents = nullptr;
+
+            switch (i) {
+              case 0: buttonEvents = m.midiButton1; break;
+              case 1: buttonEvents = m.midiButton2; break;
+              case 2: buttonEvents = m.midiButton3; break;
+              case 3: buttonEvents = m.midiButton4; break;
+              case 4: buttonEvents = m.midiButton5; break;
+              case 5: buttonEvents = m.midiButton6; break;
+            }
+
+            if (buttonEvents) {
+              for (int j = 0; j < MIDI_EVENTS_PER_SONG; j++) {
+                sendMidiEvent(buttonEvents[j]);
+              }
+            }
+          } else if (currentState == SetlistSongs) {
+            Music m = getSetlistSong(selectedSetlist, activeSetlistSong);
+            MidiEvent* buttonEvents = nullptr;
+
+            switch (i) {
+              case 0: buttonEvents = m.midiButton1; break;
+              case 1: buttonEvents = m.midiButton2; break;
+              case 2: buttonEvents = m.midiButton3; break;
+              case 3: buttonEvents = m.midiButton4; break;
+              case 4: buttonEvents = m.midiButton5; break;
+              case 5: buttonEvents = m.midiButton6; break;
+            }
+
+            if (buttonEvents) {
+              for (int j = 0; j < MIDI_EVENTS_PER_SONG; j++) {
+                sendMidiEvent(buttonEvents[j]);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    lastButtonStates[i] = reading;
   }
 }
