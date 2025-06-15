@@ -57,7 +57,7 @@ This project is an Arduino-based MIDI controller with an LCD display for managin
 | B47  | Stop Crying Your Heart Out | Oasis               |
 | B48  | Heroes                     | David Bowie         |
 | B49  | Take Me Out                | Franz Ferdinand     |
-| B50  | Suedhead                   | Morrissey           |
+| B50  | Suedehead                  | Morrissey           |
 
 ## Fetching Song Tempos
 
