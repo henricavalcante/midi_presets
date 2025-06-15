@@ -33,6 +33,11 @@ namespace std {
 #define CH_SP404_PADS1 10
 #define CH_SP404_PADS1 11
 
+#define CC_BANK_MSB 0
+#define CC_VOLUME 7
+#define CC_BANK_LSB 32
+#define CC_STRYMON_PATCH_ACTIVE 102
+
 // Enum and struct definitions
 typedef enum {
   PC,
